@@ -12,8 +12,6 @@ public class Rumbler : MonoBehaviour
     private float pulseDurration;
     private float lowA;
     private float highA;
-    private float lowB;
-    private float highB;
     private float rumbleStep;
     private bool isMotorActive = false;
     public void RumbleConstant(float low, float high, float durration)
@@ -71,7 +69,9 @@ public class Rumbler : MonoBehaviour
             case RumblePattern.Constant:
                 gamepad.SetMotorSpeeds(lowA, highA);
                 break;
+
             case RumblePattern.Pulse:
+
                 if(Time.time > pulseDurration)
                 {
                     isMotorActive = !isMotorActive;
@@ -85,6 +85,7 @@ public class Rumbler : MonoBehaviour
                         gamepad.SetMotorSpeeds(lowA, highA);
                     }
                 }
+
                 break;
             case RumblePattern.Linear:
                 break;
@@ -102,6 +103,7 @@ public class Rumbler : MonoBehaviour
     private Gamepad GetGamepad()
     {
         return Gamepad.all.FirstOrDefault(g => _playerInput.devices.Any(d => d.deviceId == g.deviceId));
+
         #region Linq Query Equivalent Logic
         //Gamepad gamepad = null;
         //foreach (var g in Gamepad.all)
