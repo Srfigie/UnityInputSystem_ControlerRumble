@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+public enum RumblePattern
+{
+    Constant,
+    Pulse,
+    Linear
+}
 
 public class Rumbler : MonoBehaviour
 {
@@ -14,6 +20,8 @@ public class Rumbler : MonoBehaviour
     private float highA;
     private float rumbleStep;
     private bool isMotorActive = false;
+
+    // Public Methods
     public void RumbleConstant(float low, float high, float durration)
     {
         activeRumbePattern = RumblePattern.Constant;
@@ -51,6 +59,8 @@ public class Rumbler : MonoBehaviour
         }
     }
 
+
+    // Unity MonoBehaviors
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -100,6 +110,8 @@ public class Rumbler : MonoBehaviour
         StopRumble();
     }
 
+    // Private helpers
+
     private Gamepad GetGamepad()
     {
         return Gamepad.all.FirstOrDefault(g => _playerInput.devices.Any(d => d.deviceId == g.deviceId));
@@ -124,11 +136,4 @@ public class Rumbler : MonoBehaviour
         //return gamepad;
         #endregion
     }
-}
-
-public enum RumblePattern
-{
-    Constant,
-    Pulse,
-    Linear
 }
