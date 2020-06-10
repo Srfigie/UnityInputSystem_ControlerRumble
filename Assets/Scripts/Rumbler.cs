@@ -17,7 +17,9 @@ public class Rumbler : MonoBehaviour
     private float rumbleDurration;
     private float pulseDurration;
     private float lowA;
+    private float lowStep;
     private float highA;
+    private float highStep;
     private float rumbleStep;
     private bool isMotorActive = false;
 
@@ -28,7 +30,6 @@ public class Rumbler : MonoBehaviour
         lowA = low;
         highA = high;
         rumbleDurration = Time.time + durration;
-        Invoke(nameof(StopRumble), durration);
     }
 
     public void RumblePulse(float low, float high, float burstTime, float durration)
@@ -42,12 +43,16 @@ public class Rumbler : MonoBehaviour
         isMotorActive = true;
         var g = GetGamepad();
         g?.SetMotorSpeeds(lowA, highA);
-        Invoke(nameof(StopRumble), durration);
     }
 
     public void RumbleLinear(float lowStart, float lowEnd, float highStart, float highEnd, float durration)
     {
-        // TODO
+        activeRumbePattern = RumblePattern.Linear;
+        lowA = lowStart;
+        highA = highStart;
+        lowStep = (lowEnd - lowStart) / durration;
+        highStep = (highEnd - highStart) / durration;
+        rumbleDurration = Time.time + durration;
     }
 
     public void StopRumble()
@@ -69,7 +74,11 @@ public class Rumbler : MonoBehaviour
     private void Update()
     {
         if (Time.time > rumbleDurration)
+        {
+            StopRumble();
             return;
+        }
+
         var gamepad = GetGamepad();
         if (gamepad == null)
             return;
@@ -98,6 +107,9 @@ public class Rumbler : MonoBehaviour
 
                 break;
             case RumblePattern.Linear:
+                gamepad.SetMotorSpeeds(lowA, highA);
+                lowA += (lowStep * Time.deltaTime);
+                highA += (highStep * Time.deltaTime);
                 break;
             default:
                 break;

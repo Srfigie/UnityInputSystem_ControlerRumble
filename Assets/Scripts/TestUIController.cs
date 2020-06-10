@@ -11,7 +11,9 @@ public class TestUIController : MonoBehaviour
     private float rumbleTime = 3f;
     private RumblePattern rumblePattern = RumblePattern.Constant;
     [SerializeField] Slider lowSlider;
+    [SerializeField] Slider lowSliderEnd;
     [SerializeField] Slider highSlider;
+    [SerializeField] Slider highSliderEnd;
     [SerializeField] Rumbler rumbler;
     private int[] timeDropdown = new int[] { 3, 5, 10 };
     private RumblePattern[] rumbleMode = new RumblePattern[] { RumblePattern.Constant, RumblePattern.Pulse, RumblePattern.Linear };
@@ -36,6 +38,7 @@ public class TestUIController : MonoBehaviour
                 rumbler.RumblePulse(lowSlider.value, highSlider.value, PulseFrequency, rumbleTime);
                 break;
             case RumblePattern.Linear:
+                rumbler.RumbleLinear(lowSlider.value, lowSliderEnd.value, highSlider.value, highSliderEnd.value, rumbleTime);
                 break;
             default:
                 break;
